@@ -11,29 +11,65 @@ statements
     :   statement (SEMICOLON | NEWLINE) statements?;
 
 statement
-    :   L_CURLY_BRACKET statements? R_CURLY_BRACKET
-    |   IF L_PAREN expression R_PAREN statement (ELSE statement)?
-    |   WHILE L_PAREN expression R_PAREN statement
-    |   DO statement WHILE L_PAREN expression R_PAREN
-    |   SWITCH L_PAREN expression R_PAREN L_CURLY_BRACKET (CASE literal COLON statements)* (DEFAULT COLON statements)? R_CURLY_BRACKET
-    |   FOR L_PAREN expression SEMICOLON expression SEMICOLON expression R_PAREN statement
-    |   FOREACH L_PAREN (Identifier COMMA)? Identifier IN expression R_PAREN statement
+    :   statementBlock
+    |   ifStatement
+    |   whileStatement
+    |   doWhileStatement
+    |   switchStatement
+    |   forStatement
+    |   foreachStatement
     |   BREAK
     |   CONTINUE
     |   RETURN expression?
     |   YIELD expression?
-    |   LOCAL inits
+    |   localDeclare
     |   functionDeclareStart funcname functionDeclareEnd
-    |   CLASS derefExpression (EXTENDS derefExpression)? L_CURLY_BRACKET memberdeclare* R_CURLY_BRACKET
-    |   TRY statement CATCH L_PAREN Identifier R_PAREN statement
+    |   classDeclare
+    |   tryCatch
     |   THROW expression
-    |   CONST Identifier EQUALS (IntegerLiteral | FloatLiteral | StringLiteral)
-    |   ENUM Identifier L_CURLY_BRACKET enumerations* R_CURLY_BRACKET
+    |   constStatement
+    |   enumStatement
     |   indexAssign
     |   expression;
 
+statementBlock
+    :   L_CURLY_BRACKET statements? R_CURLY_BRACKET;
+
+ifStatement
+    :   IF L_PAREN expression R_PAREN statement (ELSE statement)?;
+
+whileStatement
+    :   WHILE L_PAREN expression R_PAREN statement;
+
+doWhileStatement
+    :   DO statement WHILE L_PAREN expression R_PAREN;
+
+switchStatement
+    :   SWITCH L_PAREN expression R_PAREN L_CURLY_BRACKET (CASE literal COLON statements)* (DEFAULT COLON statements)? R_CURLY_BRACKET;
+
+forStatement
+    :   FOR L_PAREN expression SEMICOLON expression SEMICOLON expression R_PAREN statement;
+
+foreachStatement
+    :   FOREACH L_PAREN (Identifier COMMA)? Identifier IN expression R_PAREN statement;
+
+localDeclare
+    :   LOCAL inits;
+
+classDeclare
+    :   CLASS derefExpression (EXTENDS derefExpression)? L_CURLY_BRACKET memberdeclare* R_CURLY_BRACKET;
+
+tryCatch
+    :   TRY statement CATCH L_PAREN Identifier R_PAREN statement;
+
+constStatement
+    :   CONST Identifier EQUALS (IntegerLiteral | FloatLiteral | StringLiteral);
+
 indexAssign
     :   expression L_BRACKET expression R_BRACKET EQUALS expression;
+
+enumStatement
+    :   ENUM Identifier L_CURLY_BRACKET enumerations* R_CURLY_BRACKET;
 
 enumerations
     :   Identifier EQUALS (IntegerLiteral | FloatLiteral | StringLiteral) COMMA?;
@@ -83,12 +119,14 @@ expression
     |   typeofOperation
     |   tableConstruction
     |   expression L_PAREN args? R_PAREN
+    |   SCOPE Identifier
     |   IntegerLiteral
     |   FloatLiteral
     |   BooleanLiteral
     |   StringLiteral
     |   NULL
     |   THIS
+    |   L_PAREN expression R_PAREN
     |   derefExpression;
 
 indexAccess
@@ -208,14 +246,6 @@ expressionList
 
 derefExpression
     :   Identifier
-    |   L_PAREN expression R_PAREN
     |   derefExpression DOT Identifier
     |   derefExpression L_PAREN expressionList? R_PAREN
-    |   derefExpression L_BRACKET expression R_BRACKET
-    |   SCOPE Identifier
-    |   IntegerLiteral
-    |   FloatLiteral
-    |   BooleanLiteral
-    |   StringLiteral
-    |   NULL
-    |   THIS;
+    |   derefExpression L_BRACKET expression R_BRACKET;
