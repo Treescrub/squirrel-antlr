@@ -121,12 +121,6 @@ expression
     |   expression L_PAREN args? R_PAREN
     |   L_PAREN expression R_PAREN
     |   SCOPE Identifier
-    |   IntegerLiteral
-    |   FloatLiteral
-    |   BooleanLiteral
-    |   StringLiteral
-    |   NULL
-    |   THIS
     |   derefExpression;
 
 indexAccess
@@ -248,4 +242,5 @@ derefExpression
     :   Identifier
     |   derefExpression DOT Identifier
     |   derefExpression L_PAREN expressionList? R_PAREN
-    |   derefExpression L_BRACKET expression R_BRACKET;
+    |   derefExpression L_BRACKET expression R_BRACKET
+    |   literal;
