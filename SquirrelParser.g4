@@ -8,7 +8,7 @@ program
     :   statements? EOF;
 
 statements
-    :   statement? (SEMICOLON | NEWLINE) statements?;
+    :   (statement? (SEMICOLON | NEWLINE))*;
 
 statement
     :   statementBlock
@@ -90,8 +90,7 @@ funcname
     :   Identifier (SCOPE Identifier)*;
 
 literal
-    :
-    |   IntegerLiteral
+    :   IntegerLiteral
     |   FloatLiteral
     |   BooleanLiteral
     |   StringLiteral
