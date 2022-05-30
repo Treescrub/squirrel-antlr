@@ -119,7 +119,6 @@ expression
     |   tableConstruction
     |   expression L_PAREN args? R_PAREN
     |   L_PAREN expression R_PAREN
-    |   SCOPE Identifier
     |   derefExpression;
 
 indexAccess
@@ -242,4 +241,5 @@ derefExpression
     |   derefExpression DOT Identifier
     |   derefExpression L_PAREN expressionList? R_PAREN
     |   derefExpression L_BRACKET expression R_BRACKET
+    |   SCOPE Identifier
     |   literal;
