@@ -8,7 +8,7 @@ program
     :   statements? EOF;
 
 statements
-    :   statement (SEMICOLON | NEWLINE) statements?;
+    :   statement? (SEMICOLON | NEWLINE) statements?;
 
 statement
     :   statementBlock
@@ -119,6 +119,7 @@ expression
     |   typeofOperation
     |   tableConstruction
     |   expression L_PAREN args? R_PAREN
+    |   L_PAREN expression R_PAREN
     |   SCOPE Identifier
     |   IntegerLiteral
     |   FloatLiteral
@@ -126,7 +127,6 @@ expression
     |   StringLiteral
     |   NULL
     |   THIS
-    |   L_PAREN expression R_PAREN
     |   derefExpression;
 
 indexAccess
