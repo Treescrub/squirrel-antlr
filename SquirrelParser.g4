@@ -5,12 +5,15 @@ options {
 }
 
 program
-    :   statements? EOF;
+    :   statements EOF;
 
 statements
-    :   (statement? (SEMICOLON | NEWLINE))*;
+    :   statement*;
 
 statement
+    :   statementBody SEMICOLON?;
+
+statementBody
     :   statementBlock
     |   ifStatement
     |   whileStatement
@@ -23,7 +26,7 @@ statement
     |   RETURN expression?
     |   YIELD expression?
     |   localDeclare
-    |   functionDeclareStart funcname functionDeclareEnd
+    |   FUNCTION funcname functionDeclareEnd
     |   classDeclare
     |   tryCatch
     |   THROW expression
@@ -77,7 +80,7 @@ enumerations
 memberdeclare
     :   Identifier EQUALS expression SEMICOLON?
     |   L_BRACKET expression R_BRACKET EQUALS expression SEMICOLON?
-    |   functionDeclareStart funcname functionDeclareEnd
+    |   FUNCTION funcname functionDeclareEnd
     |   CONSTRUCTOR functionDeclareEnd;
 
 inits
@@ -137,13 +140,10 @@ functionCall
     :   derefExpression L_PAREN expressionList? R_PAREN;
 
 functionDeclare
-    :   functionDeclareStart Identifier functionDeclareEnd;
+    :   FUNCTION Identifier functionDeclareEnd;
 
 anonymousFunction
-    :   functionDeclareStart functionDeclareEnd;
-
-functionDeclareStart
-    :   FUNCTION;
+    :   FUNCTION functionDeclareEnd;
 
 functionDeclareEnd
     :   L_PAREN args? VARARGS? R_PAREN statement;
@@ -179,10 +179,10 @@ typeofOperation
     :   TYPEOF expression;
 
 tableConstruction
-    :   L_CURLY_BRACKET (WS | NEWLINE)* tableSlot* R_CURLY_BRACKET;
+    :   L_CURLY_BRACKET tableSlot* R_CURLY_BRACKET;
 
 tableSlot
-    :   (basicTableSlot | arrayTableSlot | jsonTableSlot | (functionDeclareStart funcname functionDeclareEnd)) (COMMA | '\n')*;
+    :   (basicTableSlot | arrayTableSlot | jsonTableSlot | (FUNCTION funcname functionDeclareEnd)) COMMA?;
 
 basicTableSlot
     :   Identifier EQUALS expression;

@@ -17,7 +17,7 @@ R_BRACKET : ']';
 SEMICOLON : ';';
 COLON : ':';
 COMMA : ',';
-NEWLINE : '\n';
+NEWLINE : '\n' -> skip;
 EQUALS : '=';
 FORWARD_SLASH : '/';
 STAR : '*';
@@ -143,4 +143,4 @@ fragment FalseLiteral
 Identifier
     :   [a-zA-Z_] [a-zA-Z_0-9]*;
 
-WS: (' ' | '\t') -> skip;
+WS: (' ' | '\t' | '\r') -> skip;
