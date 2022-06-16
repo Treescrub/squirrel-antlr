@@ -101,7 +101,7 @@ inits
     :   Identifier (EQUALS expression)? (COMMA inits)?;
 
 args
-    :   arg (COMMA arg)* COMMA VARARGS
+    :   arg (COMMA arg)* (COMMA VARARGS)?
     |   VARARGS;
 
 arg
