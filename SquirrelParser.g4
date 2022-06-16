@@ -36,7 +36,7 @@ statementBody
     |   expression;
 
 statementBlock
-    :   L_CURLY_BRACKET statements? R_CURLY_BRACKET;
+    :   L_CURLY_BRACKET statements R_CURLY_BRACKET;
 
 ifStatement
     :   IF L_PAREN expression R_PAREN statement (ELSE statement)?;
@@ -48,13 +48,22 @@ doWhileStatement
     :   DO statement WHILE L_PAREN expression R_PAREN;
 
 switchStatement
-    :   SWITCH L_PAREN expression R_PAREN L_CURLY_BRACKET (CASE literal COLON statements)* (DEFAULT COLON statements)? R_CURLY_BRACKET;
+    :   SWITCH L_PAREN expression R_PAREN L_CURLY_BRACKET switchCase* defaultCase? R_CURLY_BRACKET;
+
+switchCase
+    :   CASE literal COLON statements;
+
+defaultCase
+    :   DEFAULT COLON statements;
 
 forStatement
     :   FOR L_PAREN expression SEMICOLON expression SEMICOLON expression R_PAREN statement;
 
 foreachStatement
-    :   FOREACH L_PAREN (Identifier COMMA)? Identifier IN expression R_PAREN statement;
+    :   FOREACH L_PAREN foreachVar IN expression R_PAREN statement;
+
+foreachVar
+    :   (Identifier COMMA)? Identifier;
 
 localDeclare
     :   LOCAL inits;
@@ -66,7 +75,12 @@ tryCatch
     :   TRY statement CATCH L_PAREN Identifier R_PAREN statement;
 
 constStatement
-    :   CONST Identifier EQUALS (IntegerLiteral | FloatLiteral | StringLiteral);
+    :   CONST Identifier EQUALS constValue;
+
+constValue
+    :   IntegerLiteral
+    |   FloatLiteral
+    |   StringLiteral;
 
 indexAssign
     :   expression L_BRACKET expression R_BRACKET EQUALS expression;
@@ -75,7 +89,7 @@ enumStatement
     :   ENUM Identifier L_CURLY_BRACKET enumerations* R_CURLY_BRACKET;
 
 enumerations
-    :   Identifier EQUALS (IntegerLiteral | FloatLiteral | StringLiteral) COMMA?;
+    :   Identifier EQUALS constValue COMMA?;
 
 memberdeclare
     :   Identifier EQUALS expression SEMICOLON?
@@ -87,7 +101,11 @@ inits
     :   Identifier (EQUALS expression)? (COMMA inits)?;
 
 args
-    :   Identifier (EQUALS expression)? (COMMA args)*;
+    :   arg (COMMA arg)* COMMA VARARGS
+    |   VARARGS;
+
+arg
+    :   Identifier (EQUALS expression)?;
 
 funcname
     :   Identifier (SCOPE Identifier)*;
@@ -120,7 +138,6 @@ expression
     |   instanceofOperation
     |   typeofOperation
     |   tableConstruction
-    |   expression L_PAREN args? R_PAREN
     |   L_PAREN expression R_PAREN
     |   derefExpression;
 
@@ -146,10 +163,10 @@ anonymousFunction
     :   FUNCTION functionDeclareEnd;
 
 functionDeclareEnd
-    :   L_PAREN args? VARARGS? R_PAREN statement;
+    :   L_PAREN args? R_PAREN statement;
 
 lambda
-    :   AT L_PAREN args R_PAREN expression;
+    :   AT L_PAREN args? R_PAREN expression;
 
 assignment
     :   derefExpression EQUALS expression;
