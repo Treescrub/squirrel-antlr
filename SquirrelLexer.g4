@@ -6,7 +6,39 @@ NEWSLOT : '<-';
 
 INCREMENT : '++';
 DECREMENT : '--';
-TILDE : '~';
+
+LESS_THAN : '<';
+LESS_OR_EQUAL : '<=';
+EQUAL : '==';
+NOT_EQUAL : '!=';
+GREATER_THAN : '>';
+GREATER_OR_EQUAL : '>=';
+
+ASSIGN_ADD : '+=';
+ASSIGN_SUB : '-=';
+ASSIGN_DIV : '/=';
+ASSIGN_MUL : '*=';
+ASSIGN_MOD : '%=';
+
+ASSIGN : '=';
+MODULO : '%';
+MULTIPLY : '*';
+DIVIDE : '/';
+
+LOGICAL_NOT : '!';
+LOGICAL_AND : '&&';
+LOGICAL_OR : '||';
+
+BITWISE_NOT : '~';
+BITWISE_XOR : '^';
+BITWISE_AND : '&';
+BITWISE_OR : '|';
+
+COMPARE : '<=>';
+
+LEFT_SHIFT : '<<';
+RIGHT_SHIFT : '>>';
+RIGHT_UNSIGNED_SHIFT : '>>>';
 
 L_PAREN : '(';
 R_PAREN : ')';
@@ -17,19 +49,8 @@ R_BRACKET : ']';
 SEMICOLON : ';';
 COLON : ':';
 COMMA : ',';
-NEWLINE : '\n' -> skip;
-EQUALS : '=';
-FORWARD_SLASH : '/';
-STAR : '*';
-PERCENT : '%';
 AT : '@';
 QUESTION : '?';
-EXCLAMATION : '!';
-AND : '&';
-PIPE : '|';
-L_ARROW : '<';
-R_ARROW : '>';
-CARET : '^';
 DOT : '.';
 PLUS : '+';
 MINUS : '-';
@@ -143,4 +164,4 @@ fragment FalseLiteral
 Identifier
     :   [a-zA-Z_] [a-zA-Z_0-9]*;
 
-WS: (' ' | '\t' | '\r') -> skip;
+WS: (' ' | '\t' | '\r' | '\n') -> skip;
