@@ -130,16 +130,10 @@ expression
     |   indexAccess
     |   LOCAL inits
     |   newslot
-    |   ternaryOperation
-    |   binaryOperation
-    |   postfixOperation
-    |   prefixOperation
-    |   inOperation
-    |   instanceofOperation
-    |   typeofOperation
     |   tableConstruction
     |   L_PAREN expression R_PAREN
-    |   derefExpression;
+    |   derefExpression
+    |   operations;
 
 indexAccess
     :   derefExpression L_BRACKET expression R_BRACKET;
@@ -174,27 +168,6 @@ assignment
 newslot
     :   derefExpression NEWSLOT expression;
 
-ternaryOperation
-    :   derefExpression QUESTION expression COLON expression;
-
-binaryOperation
-    :   derefExpression operator expression;
-
-postfixOperation
-    :   derefExpression unaryPostfixOperator;
-
-prefixOperation
-    :   unaryPrefixOperator expression;
-
-inOperation
-    :   derefExpression IN expression;
-
-instanceofOperation
-    :   derefExpression INSTANCEOF expression;
-
-typeofOperation
-    :   TYPEOF expression;
-
 tableConstruction
     :   L_CURLY_BRACKET tableSlot* R_CURLY_BRACKET;
 
@@ -210,45 +183,157 @@ arrayTableSlot
 jsonTableSlot
     :   DOUBLE_QUOTE Identifier DOUBLE_QUOTE COLON expression;
 
-unaryPrefixOperator
-    :   INCREMENT
-    |   DECREMENT
-    |   TILDE
-    |   EXCLAMATION
-    |   PLUS
-    |   MINUS;
+operations
+    :   unaryMinusOp
+    |   bitwiseNotOp
+    |   logicalNotOp
+    |   typeofOp
+    |   preincrementOp
+    |   postincrementOp
+    |   predecrementOp
+    |   postdecrementOp
 
-unaryPostfixOperator
-    :   INCREMENT
-    |   DECREMENT;
+    |   divideOp
+    |   multiplyOp
+    |   moduloOp
 
-operator
-    :   PLUS
-    |   MINUS
-    |   STAR
-    |   FORWARD_SLASH
-    |   PERCENT
-    |   PLUS EQUALS
-    |   MINUS EQUALS
-    |   STAR EQUALS
-    |   FORWARD_SLASH EQUALS
-    |   PERCENT EQUALS
-    |   EQUALS EQUALS
-    |   L_ARROW
-    |   L_ARROW EQUALS
-    |   R_ARROW
-    |   R_ARROW EQUALS
-    |   EXCLAMATION EQUALS
-    |   L_ARROW EQUALS R_ARROW
-    |   COMMA
-    |   AND
-    |   PIPE
-    |   CARET
-    |   L_ARROW L_ARROW
-    |   R_ARROW R_ARROW
-    |   R_ARROW R_ARROW R_ARROW
-    |   AND AND
-    |   PIPE PIPE;
+    |   addOp
+    |   subOp
+
+    |   leftShiftOp
+    |   rightShiftOp
+    |   rightUnsignedShiftOp
+
+    |   lessOp
+    |   lessEqualOp
+    |   greaterOp
+    |   greaterEqualOp
+
+    |   equalOp
+    |   notEqualOp
+    |   compareOp
+
+    |   bitwiseAndOp
+
+    |   bitwiseXOROp
+
+    |   bitwiseOrOp
+
+    |   logicalAndOp
+    |   inOp
+
+    |   logicalOrOp
+
+    |   ternaryOp
+
+    |   addEqualOp
+    |   assignOp
+    |   subEqualOp
+
+    |   commaOp;
+
+unaryMinusOp
+    :   MINUS expression;
+
+bitwiseNotOp
+    :   BITWISE_NOT expression;
+
+logicalNotOp
+    :   LOGICAL_NOT expression;
+
+typeofOp
+    :   TYPEOF expression;
+
+preincrementOp
+    :   INCREMENT expression;
+
+postincrementOp
+    :   derefExpression INCREMENT;
+
+predecrementOp
+    :   DECREMENT expression;
+
+postdecrementOp
+    :   derefExpression DECREMENT;
+
+divideOp
+    :   derefExpression DIVIDE expression;
+
+multiplyOp
+    :   derefExpression MULTIPLY expression;
+
+moduloOp
+    :   derefExpression MODULO expression;
+
+addOp
+    :   derefExpression PLUS expression;
+
+subOp
+    :   derefExpression MINUS expression;
+
+leftShiftOp
+    :   derefExpression LEFT_SHIFT expression;
+
+rightShiftOp
+    :   derefExpression RIGHT_SHIFT expression;
+
+rightUnsignedShiftOp
+    :   derefExpression RIGHT_UNSIGNED_SHIFT expression;
+
+lessOp
+    :   derefExpression LESS_THAN expression;
+
+lessEqualOp
+    :   derefExpression LESS_OR_EQUAL expression;
+
+greaterOp
+    :   derefExpression GREATER_THAN expression;
+
+greaterEqualOp
+    :   derefExpression GREATER_OR_EQUAL expression;
+
+equalOp
+    :   derefExpression EQUAL expression;
+
+notEqualOp
+    :   derefExpression NOT_EQUAL expression;
+
+compareOp
+    :   derefExpression COMPARE expression;
+
+bitwiseAndOp
+    :   derefExpression BITWISE_AND expression;
+
+bitwiseXOROp
+    :   derefExpression BITWISE_XOR expression;
+
+bitwiseOrOp
+    :   derefExpression BITWISE_OR expression;
+
+logicalAndOp
+    :   derefExpression LOGICAL_AND expression;
+
+inOp
+    :   derefExpression IN expression;
+
+logicalOrOp
+    :   derefExpression LOGICAL_OR expression;
+
+ternaryOp
+    :   derefExpression QUESTION expression COLON expression;
+
+addEqualOp
+    :   derefExpression ASSIGN_ADD expression;
+
+assignOp
+    :   derefExpression ASSIGN expression;
+
+subEqualOp
+    :   derefExpression ASSIGN_SUB expression;
+
+commaOp
+    :   derefExpression COMMA expression;
+
 
 expressionList
     :   expression (COMMA expression)*;
