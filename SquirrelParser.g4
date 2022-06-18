@@ -75,7 +75,7 @@ tryCatch
     :   TRY statement CATCH L_PAREN Identifier R_PAREN statement;
 
 constStatement
-    :   CONST Identifier EQUALS constValue;
+    :   CONST Identifier ASSIGN constValue;
 
 constValue
     :   IntegerLiteral
@@ -83,29 +83,29 @@ constValue
     |   StringLiteral;
 
 indexAssign
-    :   expression L_BRACKET expression R_BRACKET EQUALS expression;
+    :   expression L_BRACKET expression R_BRACKET ASSIGN expression;
 
 enumStatement
     :   ENUM Identifier L_CURLY_BRACKET enumerations* R_CURLY_BRACKET;
 
 enumerations
-    :   Identifier EQUALS constValue COMMA?;
+    :   Identifier ASSIGN constValue COMMA?;
 
 memberdeclare
-    :   Identifier EQUALS expression SEMICOLON?
-    |   L_BRACKET expression R_BRACKET EQUALS expression SEMICOLON?
+    :   Identifier ASSIGN expression SEMICOLON?
+    |   L_BRACKET expression R_BRACKET ASSIGN expression SEMICOLON?
     |   FUNCTION funcname functionDeclareEnd
     |   CONSTRUCTOR functionDeclareEnd;
 
 inits
-    :   Identifier (EQUALS expression)? (COMMA inits)?;
+    :   Identifier (ASSIGN expression)? (COMMA inits)?;
 
 args
     :   arg (COMMA arg)* (COMMA VARARGS)?
     |   VARARGS;
 
 arg
-    :   Identifier (EQUALS expression)?;
+    :   Identifier (ASSIGN expression)?;
 
 funcname
     :   Identifier (SCOPE Identifier)*;
@@ -163,7 +163,7 @@ lambda
     :   AT L_PAREN args? R_PAREN expression;
 
 assignment
-    :   derefExpression EQUALS expression;
+    :   derefExpression ASSIGN expression;
 
 newslot
     :   derefExpression NEWSLOT expression;
@@ -175,10 +175,10 @@ tableSlot
     :   (basicTableSlot | arrayTableSlot | jsonTableSlot | (FUNCTION funcname functionDeclareEnd)) COMMA?;
 
 basicTableSlot
-    :   Identifier EQUALS expression;
+    :   Identifier ASSIGN expression;
 
 arrayTableSlot
-    :   L_BRACKET expression R_BRACKET EQUALS expression;
+    :   L_BRACKET expression R_BRACKET ASSIGN expression;
 
 jsonTableSlot
     :   DOUBLE_QUOTE Identifier DOUBLE_QUOTE COLON expression;
