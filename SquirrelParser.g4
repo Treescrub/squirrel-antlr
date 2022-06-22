@@ -25,7 +25,6 @@ statementBody
     |   CONTINUE
     |   RETURN expression?
     |   YIELD expression?
-    |   localDeclare
     |   FUNCTION funcname functionDeclareEnd
     |   classDeclare
     |   tryCatch
@@ -63,7 +62,8 @@ foreachStatement
     :   FOREACH L_PAREN foreachVar IN expression R_PAREN statement;
 
 foreachVar
-    :   (Identifier COMMA)? Identifier;
+    :   Identifier #keyOnlyVar
+    |   Identifier COMMA Identifier #keyValVar;
 
 localDeclare
     :   LOCAL inits;
@@ -119,57 +119,72 @@ literal
     |   THIS;
 
 expression
-    :   cloneExpression
-    |   arrayConstruction
-    |   deleteOperation
-    |   functionCall
-    |   functionDeclare
-    |   anonymousFunction
-    |   lambda
-    |   assignment
-    |   indexAccess
-    |   LOCAL inits
-    |   newslot
-    |   tableConstruction
-    |   L_PAREN expression R_PAREN
-    |   derefExpression
-    |   operations;
+    :   CLONE expression                            #cloneExpression
+    |   L_BRACKET expressionList? R_BRACKET         #arrayConstruction
+    |   DELETE derefExpression                      #deleteOperation
+    |   expression L_PAREN expressionList? R_PAREN  #functionCall
+    |   FUNCTION Identifier functionDeclareEnd      #functionDeclare
+    |   FUNCTION functionDeclareEnd                 #anonymousFunction
+    |   AT L_PAREN args? R_PAREN expression         #lambda
+    |   expression ASSIGN expression                #assignment
+    |   expression L_BRACKET expression R_BRACKET   #indexAccess
+    |   expression NEWSLOT expression               #newslot
+    |   L_CURLY_BRACKET tableSlot* R_CURLY_BRACKET  #tableConstruction
+    |   L_PAREN expression R_PAREN                  #parenExpression
+    |   derefExpression                             #deref
 
-indexAccess
-    :   derefExpression L_BRACKET expression R_BRACKET;
+    |   localDeclare                                #local
 
-cloneExpression
-    :   CLONE expression;
+    |   MINUS expression            #unaryMinusOp
+    |   BITWISE_NOT expression            #bitwiseNotOp
+    |   LOGICAL_NOT expression            #logicalNotOp
+    |   TYPEOF expression                #typeofOp
+    |   INCREMENT expression          #preincrementOp
+    |   expression INCREMENT    #postincrementOp
+    |   DECREMENT expression          #predecrementOp
+    |   expression DECREMENT    #postdecrementOp
 
-arrayConstruction
-    :   L_BRACKET expressionList? R_BRACKET;
+    |   expression DIVIDE expression    #divideOp
+    |   expression MULTIPLY expression  #multiplyOp
+    |   expression MODULO expression    #moduloOp
 
-deleteOperation
-    :   DELETE derefExpression;
+    |   expression PLUS expression      #addOp
+    |   expression MINUS expression     #subOp
 
-functionCall
-    :   derefExpression L_PAREN expressionList? R_PAREN;
+    |   expression LEFT_SHIFT expression            #leftShiftOp
+    |   expression RIGHT_SHIFT expression           #rightShiftOp
+    |   expression RIGHT_UNSIGNED_SHIFT expression  #rightUnsignedShiftOp
 
-functionDeclare
-    :   FUNCTION Identifier functionDeclareEnd;
+    |   expression LESS_THAN expression         #lessOp
+    |   expression LESS_OR_EQUAL expression     #lessEqualOp
+    |   expression GREATER_THAN expression      #greaterOp
+    |   expression GREATER_OR_EQUAL expression  #greaterEqualOp
 
-anonymousFunction
-    :   FUNCTION functionDeclareEnd;
+    |   expression EQUAL expression         #equalOp
+    |   expression NOT_EQUAL expression     #notEqualOp
+    |   expression COMPARE expression       #compareOp
+
+    |   expression BITWISE_AND expression   #bitwiseAndOp
+
+    |   expression BITWISE_XOR expression   #bitwiseXOROp
+
+    |   expression BITWISE_OR expression    #bitwiseOrOp
+
+    |   expression LOGICAL_AND expression   #logicalAndOp
+    |   expression IN expression            #inOp
+
+    |   expression LOGICAL_OR expression    #logicalOrOp
+
+    |   expression QUESTION expression COLON expression     #ternaryOp
+
+    |   expression ASSIGN_ADD expression    #addEqualOp
+    |   expression ASSIGN expression        #assignOp
+    |   expression ASSIGN_SUB expression    #subEqualOp
+
+    /*|   expression COMMA expression     #commaOp*/;
 
 functionDeclareEnd
     :   L_PAREN args? R_PAREN statement;
-
-lambda
-    :   AT L_PAREN args? R_PAREN expression;
-
-assignment
-    :   derefExpression ASSIGN expression;
-
-newslot
-    :   derefExpression NEWSLOT expression;
-
-tableConstruction
-    :   L_CURLY_BRACKET tableSlot* R_CURLY_BRACKET;
 
 tableSlot
     :   (basicTableSlot | arrayTableSlot | jsonTableSlot | (FUNCTION funcname functionDeclareEnd)) COMMA?;
@@ -182,158 +197,6 @@ arrayTableSlot
 
 jsonTableSlot
     :   DOUBLE_QUOTE Identifier DOUBLE_QUOTE COLON expression;
-
-operations
-    :   unaryMinusOp
-    |   bitwiseNotOp
-    |   logicalNotOp
-    |   typeofOp
-    |   preincrementOp
-    |   postincrementOp
-    |   predecrementOp
-    |   postdecrementOp
-
-    |   divideOp
-    |   multiplyOp
-    |   moduloOp
-
-    |   addOp
-    |   subOp
-
-    |   leftShiftOp
-    |   rightShiftOp
-    |   rightUnsignedShiftOp
-
-    |   lessOp
-    |   lessEqualOp
-    |   greaterOp
-    |   greaterEqualOp
-
-    |   equalOp
-    |   notEqualOp
-    |   compareOp
-
-    |   bitwiseAndOp
-
-    |   bitwiseXOROp
-
-    |   bitwiseOrOp
-
-    |   logicalAndOp
-    |   inOp
-
-    |   logicalOrOp
-
-    |   ternaryOp
-
-    |   addEqualOp
-    |   assignOp
-    |   subEqualOp
-
-    |   commaOp;
-
-unaryMinusOp
-    :   MINUS expression;
-
-bitwiseNotOp
-    :   BITWISE_NOT expression;
-
-logicalNotOp
-    :   LOGICAL_NOT expression;
-
-typeofOp
-    :   TYPEOF expression;
-
-preincrementOp
-    :   INCREMENT expression;
-
-postincrementOp
-    :   derefExpression INCREMENT;
-
-predecrementOp
-    :   DECREMENT expression;
-
-postdecrementOp
-    :   derefExpression DECREMENT;
-
-divideOp
-    :   derefExpression DIVIDE expression;
-
-multiplyOp
-    :   derefExpression MULTIPLY expression;
-
-moduloOp
-    :   derefExpression MODULO expression;
-
-addOp
-    :   derefExpression PLUS expression;
-
-subOp
-    :   derefExpression MINUS expression;
-
-leftShiftOp
-    :   derefExpression LEFT_SHIFT expression;
-
-rightShiftOp
-    :   derefExpression RIGHT_SHIFT expression;
-
-rightUnsignedShiftOp
-    :   derefExpression RIGHT_UNSIGNED_SHIFT expression;
-
-lessOp
-    :   derefExpression LESS_THAN expression;
-
-lessEqualOp
-    :   derefExpression LESS_OR_EQUAL expression;
-
-greaterOp
-    :   derefExpression GREATER_THAN expression;
-
-greaterEqualOp
-    :   derefExpression GREATER_OR_EQUAL expression;
-
-equalOp
-    :   derefExpression EQUAL expression;
-
-notEqualOp
-    :   derefExpression NOT_EQUAL expression;
-
-compareOp
-    :   derefExpression COMPARE expression;
-
-bitwiseAndOp
-    :   derefExpression BITWISE_AND expression;
-
-bitwiseXOROp
-    :   derefExpression BITWISE_XOR expression;
-
-bitwiseOrOp
-    :   derefExpression BITWISE_OR expression;
-
-logicalAndOp
-    :   derefExpression LOGICAL_AND expression;
-
-inOp
-    :   derefExpression IN expression;
-
-logicalOrOp
-    :   derefExpression LOGICAL_OR expression;
-
-ternaryOp
-    :   derefExpression QUESTION expression COLON expression;
-
-addEqualOp
-    :   derefExpression ASSIGN_ADD expression;
-
-assignOp
-    :   derefExpression ASSIGN expression;
-
-subEqualOp
-    :   derefExpression ASSIGN_SUB expression;
-
-commaOp
-    :   derefExpression COMMA expression;
-
 
 expressionList
     :   expression (COMMA expression)*;
