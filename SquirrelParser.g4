@@ -25,7 +25,7 @@ statementBody
     |   CONTINUE
     |   RETURN expression?
     |   YIELD expression?
-    |   FUNCTION funcname functionDeclareEnd
+    |   LOCAL? FUNCTION funcname functionDeclareEnd
     |   classDeclare
     |   tryCatch
     |   THROW expression
@@ -78,7 +78,7 @@ constStatement
     :   CONST Identifier ASSIGN constValue;
 
 constValue
-    :   IntegerLiteral
+    :   (PLUS | MINUS)? IntegerLiteral
     |   FloatLiteral
     |   StringLiteral;
 
@@ -199,12 +199,13 @@ jsonTableSlot
     :   DOUBLE_QUOTE Identifier DOUBLE_QUOTE COLON expression;
 
 expressionList
-    :   expression (COMMA expression)*;
+    :   expression (COMMA? expression)*;
 
 derefExpression
     :   Identifier
     |   derefExpression DOT Identifier
     |   derefExpression L_PAREN expressionList? R_PAREN
     |   derefExpression L_BRACKET expression R_BRACKET
+    |   L_PAREN expression R_PAREN
     |   SCOPE Identifier
     |   literal;
