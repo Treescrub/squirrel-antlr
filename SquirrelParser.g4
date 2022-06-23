@@ -177,10 +177,14 @@ expression
 
     |   expression QUESTION expression COLON expression     #ternaryOp
 
+    |   expression ASSIGN_MUL expression    #mulEqualOp
+    |   expression ASSIGN_DIV expression    #divEqualOp
+    |   expression ASSIGN_MOD expression    #modEqualOp
     |   expression ASSIGN_ADD expression    #addEqualOp
     |   expression ASSIGN expression        #assignOp
     |   expression ASSIGN_SUB expression    #subEqualOp
 
+    |   expression INSTANCEOF expression    #instanceofOp
     /*|   expression COMMA expression     #commaOp*/;
 
 functionDeclareEnd
