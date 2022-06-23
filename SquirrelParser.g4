@@ -56,7 +56,7 @@ defaultCase
     :   DEFAULT COLON statements;
 
 forStatement
-    :   FOR L_PAREN expression SEMICOLON expression SEMICOLON expression R_PAREN statement;
+    :   FOR L_PAREN expression? SEMICOLON expression? SEMICOLON expression? R_PAREN statement;
 
 foreachStatement
     :   FOREACH L_PAREN foreachVar IN expression R_PAREN statement;
@@ -69,7 +69,10 @@ localDeclare
     :   LOCAL inits;
 
 classDeclare
-    :   CLASS derefExpression (EXTENDS derefExpression)? L_CURLY_BRACKET memberdeclare* R_CURLY_BRACKET;
+    :   CLASS className (EXTENDS className)? L_CURLY_BRACKET memberdeclare* R_CURLY_BRACKET;
+
+className
+    :   Identifier ((DOT | SCOPE) Identifier)*;
 
 tryCatch
     :   TRY statement CATCH L_PAREN Identifier R_PAREN statement;
@@ -92,7 +95,7 @@ enumerations
     :   Identifier ASSIGN constValue COMMA?;
 
 memberdeclare
-    :   Identifier ASSIGN expression SEMICOLON?
+    :   STATIC? Identifier ASSIGN expression SEMICOLON?
     |   L_BRACKET expression R_BRACKET ASSIGN expression SEMICOLON?
     |   FUNCTION funcname functionDeclareEnd
     |   CONSTRUCTOR functionDeclareEnd;
@@ -120,6 +123,7 @@ literal
 
 expression
     :   CLONE expression                            #cloneExpression
+    |   RESUME expression                           #resumeExpression
     |   L_BRACKET expressionList? R_BRACKET         #arrayConstruction
     |   DELETE derefExpression                      #deleteOperation
     |   expression L_PAREN expressionList? R_PAREN  #functionCall
@@ -131,6 +135,7 @@ expression
     |   expression NEWSLOT expression               #newslot
     |   L_CURLY_BRACKET tableSlot* R_CURLY_BRACKET  #tableConstruction
     |   L_PAREN expression R_PAREN                  #parenExpression
+    |   BASE DOT Identifier L_PAREN expressionList? R_PAREN #baseExpression
     |   derefExpression                             #deref
 
     |   localDeclare                                #local
