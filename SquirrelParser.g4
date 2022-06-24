@@ -25,7 +25,7 @@ statementBody
     |   CONTINUE
     |   RETURN expression?
     |   YIELD expression?
-    |   LOCAL? FUNCTION funcname functionDeclareEnd
+    |   functionStatement
     |   classDeclare
     |   tryCatch
     |   THROW expression
@@ -68,6 +68,9 @@ foreachVar
 localDeclare
     :   LOCAL inits;
 
+functionStatement
+    :   LOCAL? FUNCTION funcname functionDeclareEnd;
+
 classDeclare
     :   CLASS className (EXTENDS className)? L_CURLY_BRACKET memberdeclare* R_CURLY_BRACKET;
 
@@ -101,7 +104,9 @@ memberdeclare
     |   CONSTRUCTOR functionDeclareEnd;
 
 inits
-    :   Identifier (ASSIGN expression)? (COMMA inits)?;
+    :   Identifier ASSIGN expression (COMMA inits)? #assignInit
+    |   Identifier                                  #declareInit
+    ;
 
 args
     :   arg (COMMA arg)* (COMMA VARARGS)?
