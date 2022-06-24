@@ -25,7 +25,6 @@ statementBody
     |   CONTINUE
     |   RETURN expression?
     |   YIELD expression?
-    |   functionStatement
     |   classDeclare
     |   tryCatch
     |   THROW expression
@@ -66,10 +65,8 @@ foreachVar
     |   Identifier COMMA Identifier #keyValVar;
 
 localDeclare
-    :   LOCAL inits;
-
-functionStatement
-    :   LOCAL? FUNCTION funcname functionDeclareEnd;
+    :   LOCAL inits
+    |   LOCAL FUNCTION funcname functionDeclareEnd;
 
 classDeclare
     :   CLASS className (EXTENDS className)? L_CURLY_BRACKET memberdeclare* R_CURLY_BRACKET;
@@ -132,7 +129,7 @@ expression
     |   L_BRACKET expressionList? R_BRACKET         #arrayConstruction
     |   DELETE derefExpression                      #deleteOperation
     |   expression L_PAREN expressionList? R_PAREN  #functionCall
-    |   FUNCTION Identifier functionDeclareEnd      #functionDeclare
+    |   FUNCTION funcname functionDeclareEnd        #functionDeclare
     |   FUNCTION functionDeclareEnd                 #anonymousFunction
     |   AT L_PAREN args? R_PAREN expression         #lambda
     |   expression ASSIGN expression                #assignment
