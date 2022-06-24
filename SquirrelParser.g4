@@ -213,8 +213,9 @@ expressionList
     :   expression (COMMA? expression)*;
 
 derefExpression
-    :   Identifier
-    |   derefExpression DOT Identifier
-    |   derefExpression L_BRACKET expression R_BRACKET
-    |   SCOPE Identifier
-    |   literal;
+    :   Identifier                                      #derefIdentifier
+    |   derefExpression DOT Identifier                  #derefDotAccess
+    |   derefExpression L_BRACKET expression R_BRACKET  #derefIndexAccess
+    |   SCOPE Identifier                                #derefScopeAccess
+    |   literal                                         #derefLiteral
+    ;
