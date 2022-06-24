@@ -213,8 +213,6 @@ expressionList
 derefExpression
     :   Identifier
     |   derefExpression DOT Identifier
-    |   derefExpression L_PAREN expressionList? R_PAREN
     |   derefExpression L_BRACKET expression R_BRACKET
-    |   L_PAREN expression R_PAREN
     |   SCOPE Identifier
     |   literal;
