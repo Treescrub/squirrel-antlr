@@ -21,13 +21,13 @@ statementBody
     |   switchStatement
     |   forStatement
     |   foreachStatement
-    |   BREAK
-    |   CONTINUE
-    |   RETURN expression?
-    |   YIELD expression?
+    |   breakStatement
+    |   continueStatement
+    |   returnStatement
+    |   yieldStatement
     |   classDeclare
     |   tryCatch
-    |   THROW expression
+    |   throwStatement
     |   constStatement
     |   enumStatement
     |   indexAssign
@@ -64,6 +64,18 @@ foreachVar
     :   Identifier #keyOnlyVar
     |   Identifier COMMA Identifier #keyValVar;
 
+breakStatement
+    :   BREAK;
+
+continueStatement
+    :   CONTINUE;
+
+returnStatement
+    :   RETURN expression?;
+
+yieldStatement
+    :   YIELD expression?;
+
 localDeclare
     :   LOCAL inits
     |   LOCAL FUNCTION funcname functionDeclareEnd;
@@ -76,6 +88,9 @@ className
 
 tryCatch
     :   TRY statement CATCH L_PAREN Identifier R_PAREN statement;
+
+throwStatement
+    :   THROW expression;
 
 constStatement
     :   CONST Identifier ASSIGN constValue;
