@@ -132,7 +132,6 @@ expression
     |   FUNCTION funcname functionDeclareEnd        #functionDeclare
     |   FUNCTION functionDeclareEnd                 #anonymousFunction
     |   AT L_PAREN args? R_PAREN expression         #lambda
-    |   expression ASSIGN expression                #assignment
     |   expression L_BRACKET expression R_BRACKET   #indexAccess
     |   expression NEWSLOT expression               #newslot
     |   L_CURLY_BRACKET tableSlot* R_CURLY_BRACKET  #tableConstruction
