@@ -147,18 +147,17 @@ expression
     |   FUNCTION funcname functionDeclareEnd        #functionDeclare
     |   FUNCTION functionDeclareEnd                 #anonymousFunction
     |   AT L_PAREN args? R_PAREN expression         #lambda
-    |   expression L_BRACKET expression R_BRACKET   #indexAccess
     |   expression NEWSLOT expression               #newslot
     |   L_CURLY_BRACKET tableSlot* R_CURLY_BRACKET  #tableConstruction
     |   L_PAREN expression R_PAREN                  #parenExpression
     |   BASE DOT Identifier L_PAREN expressionList? R_PAREN #baseExpression
-    |   Identifier                                  #derefIdentifier
-    |   expression DOT Identifier                   #derefDotAccess
-    |   expression L_BRACKET expression R_BRACKET   #derefIndexAccess
-    |   SCOPE Identifier                            #derefScopeAccess
-    |   literal                                     #derefLiteral
+    |   Identifier                                  #identifier
+    |   expression DOT Identifier                   #dotAccess
+    |   expression L_BRACKET expression R_BRACKET   #indexAccess
+    |   SCOPE Identifier                            #scopeAccess
+    |   literal                                     #literalExpression
 
-    |   localDeclare                                #local
+    |   localDeclare                                #localExpression
 
     |   MINUS expression            #unaryMinusOp
     |   BITWISE_NOT expression            #bitwiseNotOp
