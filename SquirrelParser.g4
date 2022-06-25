@@ -142,8 +142,9 @@ expression
     :   CLONE expression                            #cloneExpression
     |   RESUME expression                           #resumeExpression
     |   L_BRACKET expressionList? R_BRACKET         #arrayConstruction
-    |   DELETE derefExpression                      #deleteOperation
+    |   DELETE expression                           #deleteOperation
     |   expression L_PAREN expressionList? R_PAREN  #functionCall
+    |   expression DOT Identifier                   #dotIndex
     |   FUNCTION funcname functionDeclareEnd        #functionDeclare
     |   FUNCTION functionDeclareEnd                 #anonymousFunction
     |   AT L_PAREN args? R_PAREN expression         #lambda
@@ -152,7 +153,11 @@ expression
     |   L_CURLY_BRACKET tableSlot* R_CURLY_BRACKET  #tableConstruction
     |   L_PAREN expression R_PAREN                  #parenExpression
     |   BASE DOT Identifier L_PAREN expressionList? R_PAREN #baseExpression
-    |   derefExpression                             #deref
+    |   Identifier                                  #derefIdentifier
+    |   expression DOT Identifier                   #derefDotAccess
+    |   expression L_BRACKET expression R_BRACKET   #derefIndexAccess
+    |   SCOPE Identifier                            #derefScopeAccess
+    |   literal                                     #derefLiteral
 
     |   localDeclare                                #local
 
@@ -225,11 +230,3 @@ jsonTableSlot
 
 expressionList
     :   expression (COMMA? expression)*;
-
-derefExpression
-    :   Identifier                                      #derefIdentifier
-    |   derefExpression DOT Identifier                  #derefDotAccess
-    |   derefExpression L_BRACKET expression R_BRACKET  #derefIndexAccess
-    |   SCOPE Identifier                                #derefScopeAccess
-    |   literal                                         #derefLiteral
-    ;
