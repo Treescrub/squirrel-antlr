@@ -144,7 +144,6 @@ expression
     |   L_BRACKET expressionList? R_BRACKET         #arrayConstruction
     |   DELETE expression                           #deleteOperation
     |   expression L_PAREN expressionList? R_PAREN  #functionCall
-    |   expression DOT Identifier                   #dotIndex
     |   FUNCTION funcname functionDeclareEnd        #functionDeclare
     |   FUNCTION functionDeclareEnd                 #anonymousFunction
     |   AT L_PAREN args? R_PAREN expression         #lambda
