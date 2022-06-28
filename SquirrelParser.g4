@@ -31,6 +31,7 @@ statementBody
     |   constStatement
     |   enumStatement
     |   indexAssign
+    |   localDeclare
     |   expression;
 
 statementBlock
@@ -156,8 +157,6 @@ expression
     |   expression L_BRACKET expression R_BRACKET   #indexAccess
     |   SCOPE Identifier                            #scopeAccess
     |   literal                                     #literalExpression
-
-    |   localDeclare                                #localExpression
 
     |   MINUS expression            #unaryMinusOp
     |   BITWISE_NOT expression            #bitwiseNotOp
