@@ -55,7 +55,7 @@ defaultCase
     :   DEFAULT COLON statements;
 
 forStatement
-    :   FOR L_PAREN expression? SEMICOLON expression? SEMICOLON expression? R_PAREN statement;
+    :   FOR L_PAREN statement? SEMICOLON statement? SEMICOLON statement? R_PAREN statement;
 
 foreachStatement
     :   FOREACH L_PAREN foreachVar IN expression R_PAREN statement;
