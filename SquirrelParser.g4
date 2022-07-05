@@ -82,7 +82,7 @@ localDeclare
     |   LOCAL FUNCTION funcname functionDeclareEnd;
 
 classDeclare
-    :   CLASS className (EXTENDS className)? L_CURLY_BRACKET memberdeclare* R_CURLY_BRACKET;
+    :   CLASS className (EXTENDS className)? L_CURLY_BRACKET memberDeclare* R_CURLY_BRACKET;
 
 className
     :   Identifier ((DOT | SCOPE) Identifier)*;
@@ -110,11 +110,12 @@ enumStatement
 enumerations
     :   Identifier ASSIGN constValue COMMA?;
 
-memberdeclare
-    :   STATIC? Identifier ASSIGN expression SEMICOLON?
-    |   L_BRACKET expression R_BRACKET ASSIGN expression SEMICOLON?
-    |   FUNCTION funcname functionDeclareEnd
-    |   CONSTRUCTOR functionDeclareEnd;
+memberDeclare
+    :   STATIC? Identifier ASSIGN expression SEMICOLON?             #memberStaticDeclare
+    |   L_BRACKET expression R_BRACKET ASSIGN expression SEMICOLON? #memberArrayDeclare
+    |   FUNCTION funcname functionDeclareEnd                        #memberFunctionDeclare
+    |   CONSTRUCTOR functionDeclareEnd                              #memberConstructorDeclare
+    ;
 
 inits
     :   Identifier ASSIGN expression (COMMA inits)? #assignInit
